@@ -29,7 +29,7 @@ describe('Space', function() {
       var testSpace = Object.create(Space);
       var testPlayer = Player.create("X");
       testSpace.markBy(testPlayer);
-      testSpace.mark.should.equal("X");
+      testSpace.mark.should.equal(testPlayer);
     });
   });
 
@@ -55,6 +55,12 @@ describe('Space', function() {
       testSpace.coordinates.should.eql([2,3]);
     });
   });
+  describe('find', function(coordinates){
+    it('returns the space instance with given coordinates', function(){
+      var testSpace = Space.create([1,2]);
+      Space.find(1,2).should.eql(testSpace);
+    });
+  });
 });
 
 describe('Board', function(){
@@ -77,6 +83,34 @@ describe('Board', function(){
       testBoard.xCoordinates.should.eql([]);
       testBoard.oCoordinates.should.eql([]);
     });
+  });
 
+  describe('checkWin', function() {
+    it('returns true if current player has any three spaces horizontally aligned', function() {
+      var testBoard = Board.create();
+      testBoard.xCoordinates = [[1,1],[2,1],[3,1]];
+      testBoard.checkWin().should.equal(true);
+    });
   });
 });
+
+describe('Game', function(){
+  describe('initialize', function(){
+    it('creates two players and creates a board for the Game instance we are working on', function(){
+      var testGame = Object.create(Game);
+      testGame.initialize();
+      testGame.playerX.symbol.should.equal('X');
+      testGame.playerO.symbol.should.equal('O');
+      testGame.board.spaces.length.should.equal(9);
+    });
+  });
+  describe('create', function(){
+    it('creates an instance of the Game object and initializes it', function() {
+      var testGame = Game.create();
+      Game.isPrototypeOf(testGame).should.equal(true);
+    });
+  });
+
+});
+
+
